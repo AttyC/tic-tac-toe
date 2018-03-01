@@ -1,25 +1,36 @@
 describe Game do
-  #understands how to start a game
+  # understands how to start a game
+  subject(:game) { described_class.new }
 
-  let(:players) { double :players }
-
-  describe '#start_game' do
-    it 'starts a game with two players' do
-      game = Game.new
-      game.start_game
-      expect(game.players.length).to eq 2
-    end
-
-    it 'play again' do
-      game = Game.new
-      expect(game.play_again).to eq true
-    end
+  before do
+    allow($stdout).to receive(:write)
   end
 
-  describe '#play_game' do
-    it 'player 1 enters a name' do
-      game = Game.new
-      expect(game.add_player('Xandra')).to include 'Xandra'
+  describe '#start_game' do
+
+    describe '#get_name' do
+      it 'gets name from player' do
+        allow(game).to receive(:gets).and_return('Vordax')
+        expect(game.gets_name).to eq 'Vordax'
+      end
+    end
+
+    it 'stores the player in the players array' do
+      allow(game).to receive(:gets).and_return('Vordax')
+      game.start_game
+      expect(game.gets_name).to eq 'Vordax'
+    end
+
+    describe '#add_player' do
+      it 'adds a player' do
+        expect(game.add_player('Xandra')).to include 'Xandra'
+      end
+    end
+
+    describe '#play_again' do
+      it 'starts another new game' do
+        expect(game.play_again).to eq true
+      end
     end
   end
 end
